@@ -1,0 +1,34 @@
+<tr class="line-item">
+  <td class="cart-item-image">
+    <% if wish.variant.images.length == 0 %>
+        <%= link_to small_image(wish.variant.product), wish.variant.product %>
+    <% else %>
+        <%= link_to image_tag(wish.variant.images.first.attachment.url(:small)), wish.variant.product %>
+    <% end %>
+  </td>
+  <td class="cart-item-description">
+    <h4><%= link_to wish.variant.product.name, wish.variant.product %></h4>
+    <p><%= wish.variant.options_text %></p>
+    <p><%= "#{wish.ad_hoc_option_value.option_type.presentation}: #{wish.ad_hoc_option_value.presentation}" if wish.ad_hoc_option_value.present? %></p>
+    <span class="line-item-description"><%= line_item_description_text(wish.variant.product.description) %></span>
+  </td>
+  <td class="lead text-primary cart-item-price">
+    <%= wish.display_single %>
+  </td>
+  <td class="lead text-primary cart-item-total">
+    <%= wish.display_total %>
+  </td>
+  <td class="cart-item-delete">
+    <%= form_for :order, url: populate_orders_path do |f| %>
+        <%= hidden_field_tag "variant_id", wish.variant_id %>
+        <%= hidden_field_tag "ad_hoc_option_values[#{wish.ad_hoc_option_value.option_type.id}]", wish.ad_hoc_option_value_id %>
+        <%= hidden_field_tag "quantity", 1 %>
+        <div class="btn-group">
+          <button type="submit" class="btn btn-default" aria-label="Left Align">
+            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+          </button>
+          <%= link_to content_tag(:span, '', class: 'glyphicon glyphicon-minus-sign'), wish, method: :delete, class: 'btn btn-default' if wish.wishlist.user == spree_current_user %>
+        </div>
+    <% end %>
+  </td>
+</tr>
