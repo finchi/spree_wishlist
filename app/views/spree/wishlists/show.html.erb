@@ -26,6 +26,7 @@
   <% if @wishlist.wished_products.size > 0 %>
     <% @wishlist.wished_products.each do |wish|
         variant = wish.variant
+        option = wish.ad_hoc_option_value if wish.ad_hoc_option_value.present?
         product = variant.product %>
     <tr class="<%= cycle('', 'alt') %>">
     <% if @wishlist.user == spree_current_user %>
@@ -56,7 +57,7 @@
       </td>
       <td>
         <h4><%= link_to product.name, product %></h4>
-        <p><%= variant_options variant %></p>
+        <p><%= "#{option.option_type.presentation}: #{option.presentation}" if wish.ad_hoc_option_value.present? %></p>
         <%= truncate(strip_tags(product.description), length: 100, omission: '...') %>
       </td>
       <td>
@@ -66,7 +67,7 @@
         <%= wish.created_at.strftime '%m/%d/%Y' %>
       </td>
       <td>
-        <%= display_price(variant) %>
+        <%= wish.display_single %>
       </td>
       <td>
         <%= form_for wish do |f| %>

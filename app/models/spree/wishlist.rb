@@ -5,8 +5,10 @@ class Spree::Wishlist < ActiveRecord::Base
 
   validates :name, presence: true
 
-  def include?(variant_id)
-    wished_products.map(&:variant_id).include? variant_id.to_i
+  def includes_combination?(variant_id, option_id)
+    wished_products.find do |product|
+      product.variant_id == variant_id.to_i and product.ad_hoc_option_value_id == option_id.to_i
+    end
   end
 
   def to_param
