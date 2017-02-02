@@ -21,7 +21,7 @@
   <td class="cart-item-delete">
     <%= form_for :order, url: populate_orders_path do |f| %>
         <%= hidden_field_tag "variant_id", wish.variant_id %>
-        <%= hidden_field_tag "ad_hoc_option_values[#{wish.ad_hoc_option_value.option_type.id}]", wish.ad_hoc_option_value_id %>
+        <%= hidden_field_tag "ad_hoc_option_values[#{wish.ad_hoc_option_value.option_type.id}]", wish.ad_hoc_option_value_id if wish.ad_hoc_option_value.present? %>
         <%= hidden_field_tag "quantity", 1 %>
         <div class="btn-group">
           <button type="submit" class="btn btn-default" aria-label="Left Align">
