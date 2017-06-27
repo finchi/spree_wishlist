@@ -2,14 +2,15 @@ class Spree::WishedProductsController < Spree::StoreController
   respond_to :html
 
   def create
+    @wished_product = Spree::WishedProduct.new(wished_product_attributes)
     @wishlist = spree_current_user.wishlist
-    @wished_product = @wishlist.includes_combination?(params[:wished_product][:variant_id], params[:wished_product][:ad_hoc_option_value_id]) || @wishlist.wished_products.build(wished_product_attributes)
 
-    if @wished_product.persisted?
-      @wished_product.quantity += 1
+    if @wishlist.include? params[:wished_product][:variant_id]
+      @wished_product = @wishlist.wished_products.detect { |wp| wp.variant_id == params[:wished_product][:variant_id].to_i }
+    else
+      @wished_product.wishlist = spree_current_user.wishlist
+      @wished_product.save
     end
-
-    @wished_product.save!
 
     respond_with(@wished_product) do |format|
       format.html { redirect_to wishlist_url(@wishlist) }
@@ -37,6 +38,6 @@ class Spree::WishedProductsController < Spree::StoreController
   private
 
   def wished_product_attributes
-    params.require(:wished_product).permit(:variant_id, :ad_hoc_option_value_id, :wishlist_id, :remark, :quantity)
+    params.require(:wished_product).permit(:variant_id, :wishlist_id, :remark, :quantity)
   end
 end
