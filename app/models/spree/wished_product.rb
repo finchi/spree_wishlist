@@ -2,11 +2,16 @@ class Spree::WishedProduct < ActiveRecord::Base
   belongs_to :variant
   belongs_to :wishlist
 
-  def total
-    quantity * variant.price
+  validates :variant, presence: true
+
+  extend Spree::DisplayMoney
+  money_methods :single, :total
+
+  def single
+      variant.price
   end
 
-  def display_total
-    Spree::Money.new(total)
+  def total
+      quantity * variant.price
   end
 end
