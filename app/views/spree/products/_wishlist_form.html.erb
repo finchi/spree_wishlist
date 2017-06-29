@@ -1,6 +1,6 @@
-<%= form_for Spree::WishedProduct.new do |f| %>
+<%= form_for Spree::WishedProduct.new, html: {id: "new_wished_product_#{product.id}", class: "new_wished_product", :"data-source" => "#new_cart_product_#{product.id}"} do |f| %>
     <%= f.hidden_field :variant_id, value: product.master.id %>
-    <%= f.hidden_field :quantity %>
+    <%= f.hidden_field :quantity, value: 1 %>
     <button type="submit" class="btn btn-default <%= button %>">
       <%= Spree.t(:add_to_wishlist) unless button_only %>
       <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
