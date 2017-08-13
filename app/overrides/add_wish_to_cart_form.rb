@@ -8,7 +8,7 @@ Deface::Override.new(
         <% if spree_current_user %>
           <%= render partial: 'spree/products/wishlist_form', locals: {product: @product, button: '', button_only: false} %>
         <% else %>
-          <%= link_to 'Back', request.referer.present? ? request.referer : prodcuts_path, class: 'btn btn-default' %>
+          <%= link_to 'Back', request.referer.present? ? request.referer : root_path, class: 'btn btn-default' %>
         <% end %>
       </div>
     </div>",
