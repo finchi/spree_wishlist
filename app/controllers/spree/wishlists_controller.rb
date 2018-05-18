@@ -1,6 +1,7 @@
 class Spree::WishlistsController < Spree::StoreController
   helper 'spree/products'
 
+  before_action :ensure_logged, except: :show
   before_action :find_wishlist, only: [:destroy, :show, :update, :edit]
 
   respond_to :html
@@ -32,7 +33,7 @@ class Spree::WishlistsController < Spree::StoreController
   def default
     @wishlist = spree_current_user.wishlist
     respond_with(@wishlist) do |format|
-      format.html { render :show }
+      format.html {render :show}
     end
   end
 
@@ -46,11 +47,18 @@ class Spree::WishlistsController < Spree::StoreController
   def destroy
     @wishlist.destroy
     respond_with(@wishlist) do |format|
-      format.html { redirect_to account_path }
+      format.html {redirect_to account_path}
     end
   end
 
   private
+
+  def ensure_logged
+    unless spree_current_user
+      flash[:error] = PLease login to use this feature!
+      redirect_to root_path, status: 401
+    end
+  end
 
   def wishlist_attributes
     params.require(:wishlist).permit(:name, :is_default, :is_private)
