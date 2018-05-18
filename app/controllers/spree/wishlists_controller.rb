@@ -56,7 +56,7 @@ class Spree::WishlistsController < Spree::StoreController
   def ensure_logged
     unless spree_current_user
       flash[:error] = 'PLease login to use this feature!'
-      redirect_to root_path, status: 401
+      redirect_to root_path
     end
   end
 
