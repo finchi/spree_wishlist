@@ -1,4 +1,4 @@
-<h1 class="col-md-9"><%= @wishlist.name %></h1>
+<h1 class="col-md-9"><%= @wishlist.name %> (<%= "#{@wishlist.wished_products.size} #{Spree.t(:whishlist_item, count: 2)}" %>)</h1>
 
 <table id="wishlist" class="table">
   <thead>
